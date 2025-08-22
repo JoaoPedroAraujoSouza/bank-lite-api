@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: banklite_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8081:8080"
