@@ -31,29 +31,13 @@ public class ClientService {
 
         Client savedClient = clientRepository.save(newClient);
 
-        ClientResponse clientResponse = new ClientResponse();
-
-        clientResponse.setId(savedClient.getId());
-        clientResponse.setName(savedClient.getName());
-        clientResponse.setEmail(savedClient.getEmail());
-        clientResponse.setCpf(savedClient.getCpf());
-        clientResponse.setCreatedAt(savedClient.getCreatedAt());
-
-        return clientResponse;
+        return mapToClientResponse(savedClient);
     }
 
     public ClientResponse findClientById(Long id) {
         Client client = clientRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found with id: " + id));
 
-        ClientResponse clientResponse = new ClientResponse();
-
-        clientResponse.setId(client.getId());
-        clientResponse.setName(client.getName());
-        clientResponse.setEmail(client.getEmail());
-        clientResponse.setCpf(client.getCpf());
-        clientResponse.setCreatedAt(client.getCreatedAt());
-
-        return clientResponse;
+        return mapToClientResponse(client);
     }
 
     public ClientResponse updateClient(long id, ClientRequest clientRequest) {
@@ -65,19 +49,24 @@ public class ClientService {
 
         Client updatedClient = clientRepository.save(clientToUpdate);
 
-        ClientResponse clientResponse = new ClientResponse();
-
-        clientResponse.setId(updatedClient.getId());
-        clientResponse.setName(updatedClient.getName());
-        clientResponse.setEmail(updatedClient.getEmail());
-        clientResponse.setCpf(updatedClient.getCpf());
-        clientResponse.setCreatedAt(updatedClient.getCreatedAt());
-
-        return clientResponse;
+        return mapToClientResponse(updatedClient);
     }
 
     public void deleteClient(long id) {
         Client clientToDelete = clientRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found with id: " + id));
         clientRepository.delete(clientToDelete);
+    }
+
+    public ClientResponse mapToClientResponse(Client client) {
+
+        ClientResponse clientResponse = new ClientResponse();
+
+        clientResponse.setId(client.getId());
+        clientResponse.setName(client.getName());
+        clientResponse.setEmail(client.getEmail());
+        clientResponse.setCpf(client.getCpf());
+        clientResponse.setCreatedAt(client.getCreatedAt());
+
+        return clientResponse;
     }
 }
