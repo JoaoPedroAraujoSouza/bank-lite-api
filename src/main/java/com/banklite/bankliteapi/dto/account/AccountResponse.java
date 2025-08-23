@@ -1,5 +1,6 @@
 package com.banklite.bankliteapi.dto.account;
 
+import com.banklite.bankliteapi.dto.client.ClientResponse;
 import com.banklite.bankliteapi.model.Client;
 
 import java.math.BigDecimal;
@@ -7,7 +8,7 @@ import java.math.BigDecimal;
 public class AccountResponse {
 
     private long id;
-    private Client client;
+    private ClientResponse client;
     private boolean isBlocked;
     private BigDecimal balance;
 
@@ -19,11 +20,11 @@ public class AccountResponse {
         this.id = id;
     }
 
-    public Client getClient() {
+    public ClientResponse getClient() {
         return client;
     }
 
-    public void setClient(Client client) {
+    public void setClient(ClientResponse client) {
         this.client = client;
     }
 
