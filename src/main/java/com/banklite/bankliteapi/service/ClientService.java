@@ -1,7 +1,7 @@
 package com.banklite.bankliteapi.service;
 
-import com.banklite.bankliteapi.dto.ClientRequest;
-import com.banklite.bankliteapi.dto.ClientResponse;
+import com.banklite.bankliteapi.dto.client.ClientRequest;
+import com.banklite.bankliteapi.dto.client.ClientResponse;
 import com.banklite.bankliteapi.model.Client;
 import com.banklite.bankliteapi.repository.ClientRepository;
 import org.springframework.http.HttpStatus;

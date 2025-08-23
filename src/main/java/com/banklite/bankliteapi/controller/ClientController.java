@@ -1,8 +1,8 @@
 package com.banklite.bankliteapi.controller;
 
 
-import com.banklite.bankliteapi.dto.ClientRequest;
-import com.banklite.bankliteapi.dto.ClientResponse;
+import com.banklite.bankliteapi.dto.client.ClientRequest;
+import com.banklite.bankliteapi.dto.client.ClientResponse;
 import com.banklite.bankliteapi.service.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
