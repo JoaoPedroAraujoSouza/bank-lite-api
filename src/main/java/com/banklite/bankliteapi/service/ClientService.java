@@ -4,6 +4,7 @@ import com.banklite.bankliteapi.dto.client.ClientRequest;
 import com.banklite.bankliteapi.dto.client.ClientResponse;
 import com.banklite.bankliteapi.model.Client;
 import com.banklite.bankliteapi.repository.ClientRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -54,7 +55,11 @@ public class ClientService {
 
     public void deleteClient(long id) {
         Client clientToDelete = clientRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found with id: " + id));
-        clientRepository.delete(clientToDelete);
+        try {
+            clientRepository.delete(clientToDelete);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Cannot delete client with id: " + id + " because it has associated accounts.");
+        }
     }
 
     public ClientResponse mapToClientResponse(Client client) {
