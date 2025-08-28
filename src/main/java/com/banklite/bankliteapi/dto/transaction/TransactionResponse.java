@@ -11,8 +11,8 @@ public class TransactionResponse {
     private Long id;
     private BigDecimal amount;
     private TransactionType transactionType;
-    private AccountResponse sourceAccountId;
-    private AccountResponse destinationAccountId;
+    private AccountResponse sourceAccount;
+    private AccountResponse destinationAccount;
     private Instant createdAt;
 
     public Long getId() {
@@ -39,20 +39,20 @@ public class TransactionResponse {
         this.transactionType = transactionType;
     }
 
-    public AccountResponse getSourceAccountId() {
-        return sourceAccountId;
+    public AccountResponse getSourceAccount() {
+        return sourceAccount;
     }
 
-    public void setSourceAccountId(AccountResponse sourceAccountId) {
-        this.sourceAccountId = sourceAccountId;
+    public void setSourceAccount(AccountResponse sourceAccountId) {
+        this.sourceAccount = sourceAccountId;
     }
 
-    public AccountResponse getDestinationAccountId() {
-        return destinationAccountId;
+    public AccountResponse getDestinationAccount() {
+        return destinationAccount;
     }
 
-    public void setDestinationAccountId(AccountResponse destinationAccountId) {
-        this.destinationAccountId = destinationAccountId;
+    public void setDestinationAccount(AccountResponse destinationAccountId) {
+        this.destinationAccount = destinationAccountId;
     }
 
     public Instant getCreatedAt() {
