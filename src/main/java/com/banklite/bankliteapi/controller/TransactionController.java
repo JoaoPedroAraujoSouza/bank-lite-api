@@ -3,6 +3,7 @@ package com.banklite.bankliteapi.controller;
 import com.banklite.bankliteapi.dto.transaction.TransactionRequest;
 import com.banklite.bankliteapi.dto.transaction.TransactionResponse;
 import com.banklite.bankliteapi.service.TransactionService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,17 +21,17 @@ public class TransactionController {
     }
 
     @PostMapping("/deposit")
-    public TransactionResponse deposit(@RequestBody TransactionRequest transactionRequest) {
-        return transactionService.performDeposit(transactionRequest);
+    public ResponseEntity<TransactionResponse> deposit(@RequestBody TransactionRequest transactionRequest) {
+        return ResponseEntity.ok(transactionService.performDeposit(transactionRequest));
     }
 
     @PostMapping("/withdrawal")
-    public TransactionResponse withdrawal(@RequestBody TransactionRequest transactionRequest) {
-        return transactionService.performWithdrawal(transactionRequest);
+    public ResponseEntity<TransactionResponse> withdrawal(@RequestBody TransactionRequest transactionRequest) {
+        return ResponseEntity.ok(transactionService.performWithdrawal(transactionRequest));
     }
 
     @PostMapping("/transfer")
-    public TransactionResponse transfer(@RequestBody TransactionRequest transactionRequest) {
-        return transactionService.performTransfer(transactionRequest);
+    public ResponseEntity<TransactionResponse> transfer(@RequestBody TransactionRequest transactionRequest) {
+        return ResponseEntity.ok(transactionService.performTransfer(transactionRequest));
     }
 }

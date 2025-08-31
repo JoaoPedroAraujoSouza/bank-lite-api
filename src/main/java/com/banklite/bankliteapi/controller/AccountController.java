@@ -7,6 +7,7 @@ import com.banklite.bankliteapi.dto.transaction.TransactionResponse;
 import com.banklite.bankliteapi.service.AccountService;
 import com.banklite.bankliteapi.service.TransactionService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,22 +26,22 @@ public class AccountController {
     }
 
     @PostMapping
-    public AccountResponse createAccount(@RequestBody AccountRequest accountRequest) {
-        return accountService.createAccount(accountRequest);
+    public ResponseEntity<AccountResponse> createAccount(@RequestBody AccountRequest accountRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(accountService.createAccount(accountRequest));
     }
 
     @GetMapping("/{id}")
-    public AccountResponse getAccount(@PathVariable Long id) {
-        return accountService.findAccountById(id);
+    public ResponseEntity<AccountResponse> getAccount(@PathVariable Long id) {
+        return ResponseEntity.ok(accountService.findAccountById(id));
     }
 
     @PatchMapping("/{id}")
-    public AccountResponse updateAccount(@PathVariable Long id, @RequestBody UpdateAccountRequest accountRequest) {
-        return accountService.updateAccount(id, accountRequest);
+    public ResponseEntity<AccountResponse> updateAccount(@PathVariable Long id, @RequestBody UpdateAccountRequest accountRequest) {
+        return ResponseEntity.ok(accountService.updateAccount(id, accountRequest));
     }
 
     @GetMapping("/{id}/statement")
-    public List<TransactionResponse> getAccountStatement(@PathVariable Long id) {
-        return transactionService.getStatement(id);
+    public ResponseEntity<List<TransactionResponse>> getAccountStatement(@PathVariable Long id) {
+        return ResponseEntity.ok(transactionService.getStatement(id));
     }
 }

@@ -5,6 +5,7 @@ import com.banklite.bankliteapi.dto.client.ClientRequest;
 import com.banklite.bankliteapi.dto.client.ClientResponse;
 import com.banklite.bankliteapi.service.ClientService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,26 +22,26 @@ public class ClientController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ClientResponse createClient(@RequestBody ClientRequest clientRequest) {
-        return clientService.createClient(clientRequest);
+    public ResponseEntity<ClientResponse> createClient(@RequestBody ClientRequest clientRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.createClient(clientRequest));
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ClientResponse getClient(@PathVariable Long id) {
-        return clientService.findClientById(id);
+    public ResponseEntity<ClientResponse> getClient(@PathVariable Long id) {
+        return ResponseEntity.ok(clientService.findClientById(id));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ClientResponse updateClient(@PathVariable Long id, @RequestBody ClientRequest clientRequest) {
-        return clientService.updateClient(id, clientRequest);
+    public ResponseEntity<ClientResponse> updateClient(@PathVariable Long id, @RequestBody ClientRequest clientRequest) {
+        return ResponseEntity.ok(clientService.updateClient(id, clientRequest));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
-    public void deleteClient(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteClient(@PathVariable Long id) {
         clientService.deleteClient(id);
+        return ResponseEntity.noContent().build();
     }
 }
