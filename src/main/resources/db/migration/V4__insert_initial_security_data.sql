@@ -1,6 +1,6 @@
-INSERT INTO roles (id, name) VALUES (1,  ;'ROLE_ADMIN';);
-INSERT INTO roles (id, name) VALUES (2,  ;'ROLE_USER';);
+INSERT INTO roles (id, name) VALUES (1,  'ROLE_ADMIN');
+INSERT INTO roles (id, name) VALUES (2,  'ROLE_USER');
 
-INSERT INTO users (id, login, password) VALUES (1, 'admin', '$2a$12$7FpoSSuQOmJtmmh.10RNNOkLe6q0joimzaBv2xnOBhATm23EnERa6')
+INSERT INTO users (id, login, password) VALUES (1, 'admin', '$2a$12$7FpoSSuQOmJtmmh.10RNNOkLe6q0joimzaBv2xnOBhATm23EnERa6');
 
-INSERT INTO users_roles (user_id, role_id) VALUES (1, 1);
+INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
