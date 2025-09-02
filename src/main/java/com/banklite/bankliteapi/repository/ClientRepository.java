@@ -5,4 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ClientRepository extends JpaRepository<Client, Long> {
     Long id(Long id);
+
+    boolean existsByCpf(String cpf);
+    boolean existsByEmail(String email);
 }
