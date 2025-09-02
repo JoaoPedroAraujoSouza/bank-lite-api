@@ -22,6 +22,14 @@ public class ClientService {
 
     public ClientResponse createClient(ClientRequest clientRequest) {
 
+        if (clientRepository.existsByEmail(clientRequest.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already in use: " + clientRequest.getEmail());
+        }
+
+        if (clientRepository.existsByCpf(clientRequest.getCpf())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "CPF already in use: " + clientRequest.getCpf());
+        }
+
         Client newClient = new Client();
 
         newClient.setName(clientRequest.getName());
