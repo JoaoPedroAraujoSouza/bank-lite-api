@@ -4,15 +4,15 @@ import com.banklite.bankliteapi.dto.account.AccountResponse;
 import com.banklite.bankliteapi.dto.client.ClientResponse;
 import com.banklite.bankliteapi.dto.transaction.TransactionRequest;
 import com.banklite.bankliteapi.dto.transaction.TransactionResponse;
+import com.banklite.bankliteapi.exception.BusinessException;
+import com.banklite.bankliteapi.exception.ResourceNotFoundException;
 import com.banklite.bankliteapi.model.Account;
 import com.banklite.bankliteapi.model.Transaction;
 import com.banklite.bankliteapi.model.enums.TransactionType;
 import com.banklite.bankliteapi.repository.AccountRepository;
 import com.banklite.bankliteapi.repository.TransactionRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -32,17 +32,17 @@ public class TransactionService {
     @Transactional
     public TransactionResponse performDeposit(TransactionRequest request) {
         if (request.getAmount() == null || request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Deposit amount must be positive");
+            throw new BusinessException("Deposit amount must be positive");
         }
         if (request.getDestinationAccountId() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Destination account ID is required");
+            throw new BusinessException("Destination account ID is required for a deposit");
         }
 
         Account destinationAccount = accountRepository.findById(request.getDestinationAccountId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Destination account not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Destination account not found"));
 
         if (destinationAccount.getIsBlocked()) {
-            throw  new ResponseStatusException(HttpStatus.CONFLICT, "Destination account is blocked");
+            throw  new BusinessException("Destination account is blocked");
         }
 
         destinationAccount.setBalance(destinationAccount.getBalance().add(request.getAmount()));
@@ -62,22 +62,22 @@ public class TransactionService {
     public TransactionResponse performWithdrawal(TransactionRequest request) {
 
         if (request.getAmount() == null || request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Withdraw amount must be positive");
+            throw new BusinessException("Withdrawal amount must be positive");
         }
 
         if (request.getSourceAccountId() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Source account ID is required");
+            throw new BusinessException("Source account ID is required for a withdrawal");
         }
 
         Account sourceAccount = accountRepository.findById(request.getSourceAccountId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Source account not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Source account not found"));
 
         if (sourceAccount.getIsBlocked()) {
-            throw  new ResponseStatusException(HttpStatus.CONFLICT, "Source account is blocked");
+            throw  new BusinessException("Source account is blocked");
         }
 
         if (sourceAccount.getBalance().compareTo(request.getAmount()) < 0) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Insufficient funds in source account");
+            throw new BusinessException("Insufficient funds for this withdrawal.");
         }
 
         sourceAccount.setBalance(sourceAccount.getBalance().subtract(request.getAmount()));
@@ -98,29 +98,29 @@ public class TransactionService {
     public TransactionResponse performTransfer(TransactionRequest request) {
 
         if (request.getAmount() == null || request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Transfer amount must be positive.");
+            throw new BusinessException("Transfer amount must be positive");
         }
 
         if (request.getSourceAccountId() == null || request.getDestinationAccountId() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Source and destination account IDs are required for a transfer.");
+            throw new BusinessException("Both source and destination account IDs are required for a transfer");
         }
 
         if (request.getSourceAccountId().equals(request.getDestinationAccountId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Source and destination accounts cannot be the same.");
+            throw new BusinessException("Source and destination accounts must be different for a transfer");
         }
 
         Account sourceAccount = accountRepository.findById(request.getSourceAccountId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Source account not found."));
+                .orElseThrow(() -> new ResourceNotFoundException("Source account not found"));
 
         Account destinationAccount = accountRepository.findById(request.getDestinationAccountId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Destination account not found."));
+                .orElseThrow(() -> new ResourceNotFoundException("Destination account not found"));
 
         if (sourceAccount.getIsBlocked() || destinationAccount.getIsBlocked()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "One of the accounts involved in the transfer is blocked.");
+            throw new BusinessException("One or both accounts are blocked");
         }
 
         if (sourceAccount.getBalance().compareTo(request.getAmount()) < 0) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Insufficient funds for this transfer.");
+            throw new BusinessException("Insufficient funds for this transfer.");
         }
 
         sourceAccount.setBalance(sourceAccount.getBalance().subtract(request.getAmount()));
@@ -144,7 +144,7 @@ public class TransactionService {
 
     public List<TransactionResponse> getStatement(Long accountId) {
         if (!accountRepository.existsById(accountId)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found with id: " + accountId);
+            throw new ResourceNotFoundException("Account not found");
         }
 
         List<Transaction> transactions = transactionRepository.findBySourceAccountIdOrDestinationAccountId(accountId, accountId);
