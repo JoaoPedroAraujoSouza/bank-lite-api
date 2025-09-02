@@ -4,6 +4,7 @@ package com.banklite.bankliteapi.controller;
 import com.banklite.bankliteapi.dto.client.ClientRequest;
 import com.banklite.bankliteapi.dto.client.ClientResponse;
 import com.banklite.bankliteapi.service.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +23,7 @@ public class ClientController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ClientResponse> createClient(@RequestBody ClientRequest clientRequest) {
+    public ResponseEntity<ClientResponse> createClient(@Valid @RequestBody ClientRequest clientRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(clientService.createClient(clientRequest));
     }
 
@@ -34,7 +35,7 @@ public class ClientController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ClientResponse> updateClient(@PathVariable Long id, @RequestBody ClientRequest clientRequest) {
+    public ResponseEntity<ClientResponse> updateClient(@PathVariable Long id, @Valid @RequestBody ClientRequest clientRequest) {
         return ResponseEntity.ok(clientService.updateClient(id, clientRequest));
     }
 
