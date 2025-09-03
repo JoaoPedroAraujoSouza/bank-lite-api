@@ -3,7 +3,10 @@
   "builds": [
     { "src": "pom.xml",
       "use": "@vercel/java",
-      "config": { "serverPort": 8088 }
+      "config": {
+        "serverPort": 8088,
+        "java": { "version": 17 }
+      }
     }
   ],
     "routes": [
