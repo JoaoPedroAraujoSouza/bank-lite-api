@@ -92,5 +92,5 @@ The application will start on port `8088`.
 
 The complete documentation for all endpoints, including data models and error responses, is available via Swagger UI.
 
-- **Production:** https://bank-lite-api.onrender.com/swagger-ui.html
+- **Production:** [https://bank-lite-api.onrender.com/swagger-ui.html](https://bank-lite-api.onrender.com/swagger-ui/index.html)
 - **Local:** `http://localhost:8088/swagger-ui.html`
