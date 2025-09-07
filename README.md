@@ -10,7 +10,7 @@ This project was developed to demonstrate proficiency in the Java/Spring stack a
 
 The API is deployed and running on the cloud via Render. You can interact with the documentation and test the endpoints publicly.
 
-- **Interactive Documentation (Swagger UI):** https://bank-lite-api.onrender.com/swagger-ui.html
+- **Interactive Documentation (Swagger UI):** [https://bank-lite-api.onrender.com/swagger-ui.html](https://bank-lite-api.onrender.com/swagger-ui/index.html)
 - **Health Check Endpoint:** https://bank-lite-api.onrender.com/actuator/health
 
 *(Note: Render's free tier may spin down the service after a period of inactivity. The first request might take 30-60 seconds to "wake up" the application).*
